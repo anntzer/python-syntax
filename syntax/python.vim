@@ -75,7 +75,7 @@ syn keyword pythonException     try except finally
 syn keyword pythonInclude       import
 syn keyword pythonImport        import
 syn match pythonRaiseFromStatement      '\<from\>'
-syn match pythonImport          '^\s*\zsfrom\>'
+syn match pythonImport          '\v(^|;)\s*\zsfrom>'
 
 
 if s:Python2Syntax()
