@@ -358,7 +358,14 @@ if s:Enabled('g:python_highlight_builtin_funcs')
       let s:funcs_re .= '|ascii|exec|print'
   endif
 
-  let s:funcs_re = 'syn match pythonBuiltinFunc ''\v\.@<!\zs<%(' . s:funcs_re . ')>'
+  " (Exclude if preceded by a dot, possibly on the line before, except if that
+  " dot is in a comment or Ellipsis.  Would fail if the previous line contained
+  " '#' in a string, though.  (Thus, directly check for the current line, too.)
+  " Exclude if immediately followed by an equal sign, as this would typically
+  " correspond to a keyword argument.)
+  let s:funcs_re =
+      \ 'syn match pythonBuiltinFunc ''\v(^[^#]*[^.#]\s*\.(\s|\n)*|\.\s*)@160<!<%('
+      \ . s:funcs_re . ')>'
 
   if !s:Enabled('g:python_highlight_builtin_funcs_kwarg')
       let s:funcs_re .= '\=@!'
